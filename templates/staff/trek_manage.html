@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Manage {{ trek['name'] }}{% endblock %}
+{% block content %}
+<h2 class="mb-1">{{ trek['name'] }}</h2>
+<p class="text-muted">{{ trek['location'] }} &middot; <span class="badge badge-difficulty-{{ trek['difficulty']|lower }}">{{ trek['difficulty'] }}</span> &middot; <span class="badge badge-status-{{ trek['status']|lower }}">{{ trek['status'] }}</span></p>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-6">
+        <div class="card card-trek p-3">
+            <h5><i class="bi bi-sliders"></i> Update Available Slots</h5>
+            <form method="POST">
+                <input type="hidden" name="action" value="update_slots">
+                <div class="mb-2">
+                    <label class="form-label">Available Slots (max {{ trek['total_slots'] }})</label>
+                    <input type="number" name="available_slots" class="form-control" min="0" max="{{ trek['total_slots'] }}" value="{{ trek['available_slots'] }}">
+                </div>
+                <button type="submit" class="btn btn-trek w-100">Update Slots</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-trek p-3">
+            <h5><i class="bi bi-toggle-on"></i> Update Trek Status</h5>
+            <form method="POST" class="d-flex gap-2 flex-wrap">
+                <input type="hidden" name="action" value="set_status">
+                <button type="submit" name="status" value="Open" class="btn btn-success flex-fill">Mark Open</button>
+                <button type="submit" name="status" value="Closed" class="btn btn-secondary flex-fill">Mark Closed</button>
+                <button type="submit" name="status" value="Completed" class="btn btn-dark flex-fill">Mark Completed</button>
+            </form>
+            <small class="text-muted mt-2 d-block">"Open" allows trekkers to book. "Completed" finalizes all current bookings.</small>
+        </div>
+    </div>
+</div>
+
+<div class="card card-trek p-3 mt-3">
+    <h5><i class="bi bi-people"></i> Registered Participants ({{ participants|length }})</h5>
+    {% if participants %}
+    <table class="table table-sm mt-2">
+        <thead><tr><th>Name</th><th>Email</th><th>Contact</th><th>Booking Date</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for p in participants %}
+            <tr>
+                <td>{{ p['name'] }}</td>
+                <td>{{ p['email'] }}</td>
+                <td>{{ p['contact'] }}</td>
+                <td>{{ p['booking_date'][:10] }}</td>
+                <td>
+                    {% if p['status'] == 'Booked' %}<span class="badge badge-status-open">Booked</span>
+                    {% elif p['status'] == 'Cancelled' %}<span class="badge bg-danger">Cancelled</span>
+                    {% else %}<span class="badge badge-status-completed">Completed</span>{% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No participants have booked this trek yet.</p>
+    {% endif %}
+</div>
+
+<a href="{{ url_for('staff.dashboard') }}" class="btn btn-link mt-3">&larr; Back to Dashboard</a>
+{% endblock %}

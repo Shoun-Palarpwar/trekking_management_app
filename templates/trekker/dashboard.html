@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-backpack4"></i> Welcome, {{ g.user['name'] }}</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card bg-1">
+            <p>Open Treks Available</p>
+            <h3>{{ available_treks }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card bg-3">
+            <p>My Active Bookings</p>
+            <h3>{{ my_bookings }}</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <a href="{{ url_for('trekker.browse_treks') }}" class="stat-card bg-2 d-flex flex-column justify-content-center text-decoration-none">
+            <p>Find a new adventure</p>
+            <h3><i class="bi bi-search"></i> Browse Treks</h3>
+        </a>
+    </div>
+</div>
+
+<div class="card card-trek p-3">
+    <h5>Upcoming Booked Treks</h5>
+    {% if upcoming %}
+    <table class="table table-sm mt-2">
+        <thead><tr><th>Trek</th><th>Location</th><th>Start Date</th><th>Trek Status</th></tr></thead>
+        <tbody>
+        {% for u in upcoming %}
+            <tr>
+                <td>{{ u['trek_name'] }}</td>
+                <td>{{ u['location'] }}</td>
+                <td>{{ u['start_date'] }}</td>
+                <td><span class="badge badge-status-{{ u['trek_status']|lower }}">{{ u['trek_status'] }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No upcoming treks booked. <a href="{{ url_for('trekker.browse_treks') }}">Browse open treks</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

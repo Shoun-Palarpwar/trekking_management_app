@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Assign Staff{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-trek p-4">
+            <h3 class="mb-3"><i class="bi bi-person-plus"></i> Assign Staff to "{{ trek['name'] }}"</h3>
+            {% if staff_list %}
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Select an approved staff member</label>
+                    <select name="staff_id" class="form-select" required>
+                        <option value="" disabled {% if not trek['assigned_staff_id'] %}selected{% endif %}>-- choose staff --</option>
+                        {% for s in staff_list %}
+                        <option value="{{ s['id'] }}" {% if trek['assigned_staff_id']==s['id'] %}selected{% endif %}>{{ s['name'] }} ({{ s['username'] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-trek w-100">Assign</button>
+                <a href="{{ url_for('admin.treks') }}" class="btn btn-link w-100 text-center">Cancel</a>
+            </form>
+            {% else %}
+            <p class="text-muted">No approved staff members available. Approve staff first from the Staff page.</p>
+            <a href="{{ url_for('admin.staff_list') }}" class="btn btn-trek-outline w-100">Go to Staff Approvals</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

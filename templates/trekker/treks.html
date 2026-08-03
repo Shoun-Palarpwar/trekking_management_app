@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Browse Treks{% endblock %}
+{% block content %}
+<h2 class="mb-3"><i class="bi bi-map"></i> Browse Treks</h2>
+
+<div class="card card-trek p-3 mb-4">
+    <form method="GET" class="row g-2">
+        <div class="col-md-5">
+            <input type="text" name="location" class="form-control" placeholder="Filter by location..." value="{{ location }}">
+        </div>
+        <div class="col-md-4">
+            <select name="difficulty" class="form-select">
+                <option value="">All Difficulties</option>
+                {% for d in ['Easy', 'Moderate', 'Hard'] %}
+                <option value="{{ d }}" {% if difficulty==d %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-trek w-100">Filter</button>
+        </div>
+    </form>
+</div>
+
+<div class="row g-3">
+{% for t in treks %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card card-trek p-3 h-100 d-flex flex-column">
+            <div class="d-flex justify-content-between">
+                <h5>{{ t['name'] }}</h5>
+                <span class="badge badge-status-{{ t['status']|lower }}">{{ t['status'] }}</span>
+            </div>
+            <p class="text-muted mb-1"><i class="bi bi-geo-alt"></i> {{ t['location'] }}</p>
+            <p class="mb-1"><span class="badge badge-difficulty-{{ t['difficulty']|lower }}">{{ t['difficulty'] }}</span> &middot; {{ t['duration'] }} day(s)</p>
+            <p class="mb-1"><strong>{{ t['available_slots'] }}</strong> slot(s) left of {{ t['total_slots'] }}</p>
+            <p class="text-muted small mb-3">{{ t['start_date'] }} &rarr; {{ t['end_date'] }}</p>
+            <div class="mt-auto">
+                {% if t['already_booked'] %}
+                    <button class="btn btn-outline-secondary w-100" disabled>Already Booked</button>
+                {% elif t['status'] != 'Open' %}
+                    <button class="btn btn-outline-secondary w-100" disabled>Not Open Yet</button>
+                {% elif t['available_slots'] <= 0 %}
+                    <button class="btn btn-outline-secondary w-100" disabled>Fully Booked</button>
+                {% else %}
+                    <form method="POST" action="{{ url_for('trekker.book_trek', trek_id=t['id']) }}">
+                        <button type="submit" class="btn btn-trek w-100">Book This Trek</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p class="text-muted">No treks match your search. Try adjusting the filters.</p>
+{% endfor %}
+</div>
+{% endblock %}

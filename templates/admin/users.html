@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Manage Users{% endblock %}
+{% block content %}
+<h2 class="mb-3"><i class="bi bi-people"></i> Users (Trekkers)</h2>
+<div class="card card-trek p-3">
+    <div class="table-responsive">
+    <table class="table align-middle">
+        <thead><tr><th>ID</th><th>Name</th><th>Username</th><th>Email</th><th>Contact</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td>{{ u['id'] }}</td>
+                <td>{{ u['name'] }}</td>
+                <td>{{ u['username'] }}</td>
+                <td>{{ u['email'] }}</td>
+                <td>{{ u['contact'] }}</td>
+                <td>
+                    {% if u['status'] == 'active' %}<span class="badge badge-status-open">Active</span>
+                    {% else %}<span class="badge bg-danger">Blacklisted</span>{% endif %}
+                </td>
+                <td>
+                    {% if u['status'] == 'active' %}
+                    <form method="POST" action="{{ url_for('admin.blacklist_user', user_id=u['id']) }}">
+                        <button class="btn btn-sm btn-outline-danger">Blacklist</button>
+                    </form>
+                    {% else %}
+                    <form method="POST" action="{{ url_for('admin.reinstate_user', user_id=u['id']) }}">
+                        <button class="btn btn-sm btn-outline-success">Reinstate</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7" class="text-center text-muted">No users registered yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

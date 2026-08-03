@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Admin Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card bg-1">
+            <p>Total Treks</p>
+            <h3>{{ total_treks }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-2">
+            <p>Users &amp; Staff</p>
+            <h3>{{ total_users }} / {{ total_staff }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-3">
+            <p>Total Bookings</p>
+            <h3>{{ total_bookings }}</h3>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-4">
+            <p>Pending Staff Approvals</p>
+            <h3>{{ pending_staff }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><a href="{{ url_for('admin.add_trek') }}" class="btn btn-trek w-100"><i class="bi bi-plus-circle"></i> Add New Trek</a></div>
+    <div class="col-md-3"><a href="{{ url_for('admin.staff_list') }}" class="btn btn-trek-outline w-100"><i class="bi bi-person-check"></i> Review Staff</a></div>
+    <div class="col-md-3"><a href="{{ url_for('admin.users_list') }}" class="btn btn-trek-outline w-100"><i class="bi bi-people"></i> Manage Users</a></div>
+    <div class="col-md-3"><a href="{{ url_for('admin.search') }}" class="btn btn-trek-outline w-100"><i class="bi bi-search"></i> Search</a></div>
+</div>
+
+<div class="card card-trek p-3">
+    <h5>Recent Bookings</h5>
+    {% if recent_bookings %}
+    <table class="table table-sm align-middle mt-2">
+        <thead><tr><th>User</th><th>Trek</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for b in recent_bookings %}
+            <tr>
+                <td>{{ b['user_name'] }}</td>
+                <td>{{ b['trek_name'] }}</td>
+                <td>{{ b['booking_date'][:10] }}</td>
+                <td><span class="badge bg-secondary">{{ b['status'] }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No bookings yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h2 class="mb-3"><i class="bi bi-search"></i> Search</h2>
+<div class="card card-trek p-3 mb-3">
+    <form method="GET" class="row g-2">
+        <div class="col-md-6">
+            <input type="text" name="q" class="form-control" placeholder="Search by name, ID, username or location..." value="{{ query }}">
+        </div>
+        <div class="col-md-3">
+            <select name="category" class="form-select">
+                <option value="treks" {% if category=='treks' %}selected{% endif %}>Treks</option>
+                <option value="staff" {% if category=='staff' %}selected{% endif %}>Staff</option>
+                <option value="users" {% if category=='users' %}selected{% endif %}>Users</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-trek w-100">Search</button>
+        </div>
+    </form>
+</div>
+
+{% if query %}
+<div class="card card-trek p-3">
+    <h5>Results for "{{ query }}" in {{ category }}</h5>
+    {% if results %}
+    <table class="table table-sm mt-2">
+        <thead>
+            {% if category == 'treks' %}
+            <tr><th>ID</th><th>Name</th><th>Location</th><th>Status</th></tr>
+            {% else %}
+            <tr><th>ID</th><th>Name</th><th>Username</th><th>Status</th></tr>
+            {% endif %}
+        </thead>
+        <tbody>
+        {% for r in results %}
+            {% if category == 'treks' %}
+            <tr><td>{{ r['id'] }}</td><td>{{ r['name'] }}</td><td>{{ r['location'] }}</td><td>{{ r['status'] }}</td></tr>
+            {% else %}
+            <tr><td>{{ r['id'] }}</td><td>{{ r['name'] }}</td><td>{{ r['username'] }}</td><td>{{ r['status'] }}</td></tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted mb-0">No results found.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

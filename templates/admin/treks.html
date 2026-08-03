@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Manage Treks{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-map"></i> Treks</h2>
+    <a href="{{ url_for('admin.add_trek') }}" class="btn btn-trek"><i class="bi bi-plus-circle"></i> Add Trek</a>
+</div>
+
+<div class="card card-trek p-3">
+    <div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th>
+                <th>Slots</th><th>Staff</th><th>Status</th><th>Dates</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for t in treks %}
+            <tr>
+                <td>{{ t['id'] }}</td>
+                <td>{{ t['name'] }}</td>
+                <td>{{ t['location'] }}</td>
+                <td><span class="badge badge-difficulty-{{ t['difficulty']|lower }}">{{ t['difficulty'] }}</span></td>
+                <td>{{ t['available_slots'] }}/{{ t['total_slots'] }}</td>
+                <td>{{ t['staff_name'] or '—' }}</td>
+                <td><span class="badge badge-status-{{ t['status']|lower }}">{{ t['status'] }}</span></td>
+                <td class="small">{{ t['start_date'] }}<br>to {{ t['end_date'] }}</td>
+                <td class="text-nowrap">
+                    <a href="{{ url_for('admin.edit_trek', trek_id=t['id']) }}" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                    <a href="{{ url_for('admin.assign_staff', trek_id=t['id']) }}" class="btn btn-sm btn-outline-primary" title="Assign Staff"><i class="bi bi-person-plus"></i></a>
+                    <form method="POST" action="{{ url_for('admin.delete_trek', trek_id=t['id']) }}" class="d-inline" onsubmit="return confirm('Delete this trek?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="bi bi-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="9" class="text-center text-muted">No treks created yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

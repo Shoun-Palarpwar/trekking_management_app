@@ -1,0 +1,100 @@
+:root {
+    --trek-green: #2d5a3d;
+    --trek-green-dark: #1e3d2a;
+    --trek-orange: #d9713c;
+    --trek-cream: #f7f4ed;
+    --trek-brown: #6b4f3b;
+}
+
+body {
+    background-color: var(--trek-cream);
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: #2b2b2b;
+}
+
+.navbar-trek {
+    background-color: var(--trek-green-dark) !important;
+}
+
+.navbar-trek .navbar-brand,
+.navbar-trek .nav-link {
+    color: #f1ede4 !important;
+}
+
+.navbar-trek .nav-link:hover {
+    color: var(--trek-orange) !important;
+}
+
+.btn-trek {
+    background-color: var(--trek-green);
+    border-color: var(--trek-green);
+    color: #fff;
+}
+.btn-trek:hover {
+    background-color: var(--trek-green-dark);
+    border-color: var(--trek-green-dark);
+    color: #fff;
+}
+
+.btn-trek-outline {
+    color: var(--trek-green);
+    border-color: var(--trek-green);
+    background-color: transparent;
+}
+.btn-trek-outline:hover {
+    background-color: var(--trek-green);
+    color: #fff;
+}
+
+.badge-difficulty-easy { background-color: #4a8c5f; }
+.badge-difficulty-moderate { background-color: #d9a13c; }
+.badge-difficulty-hard { background-color: #c2402e; }
+
+.badge-status-pending { background-color: #9e9e9e; }
+.badge-status-approved { background-color: #4a7ba6; }
+.badge-status-open { background-color: #4a8c5f; }
+.badge-status-closed { background-color: #6b4f3b; }
+.badge-status-completed { background-color: #3d3d3d; }
+
+.card-trek {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card-trek:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.stat-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: #fff;
+}
+.stat-card h3 { font-size: 2rem; font-weight: 700; margin-bottom: 0; }
+.stat-card p { margin-bottom: 0; opacity: 0.9; }
+
+.stat-card.bg-1 { background: linear-gradient(135deg, #2d5a3d, #4a8c5f); }
+.stat-card.bg-2 { background: linear-gradient(135deg, #4a7ba6, #6ba0c9); }
+.stat-card.bg-3 { background: linear-gradient(135deg, #d9713c, #e59a6b); }
+.stat-card.bg-4 { background: linear-gradient(135deg, #6b4f3b, #8a6a52); }
+
+.hero-section {
+    background: linear-gradient(135deg, var(--trek-green-dark), var(--trek-green));
+    color: #f7f4ed;
+    padding: 5rem 1rem;
+    border-radius: 0 0 24px 24px;
+}
+
+footer {
+    background-color: var(--trek-green-dark);
+    color: #d8d3c6;
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+}
+
+.table thead {
+    background-color: var(--trek-green);
+    color: #fff;
+}

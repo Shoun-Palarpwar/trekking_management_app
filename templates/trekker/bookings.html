@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}My Bookings{% endblock %}
+{% block content %}
+<h2 class="mb-3"><i class="bi bi-journal-check"></i> My Bookings &amp; Trekking History</h2>
+
+<div class="card card-trek p-3">
+    <div class="table-responsive">
+    <table class="table align-middle">
+        <thead><tr><th>Trek</th><th>Location</th><th>Difficulty</th><th>Dates</th><th>Booking Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for b in bookings %}
+            <tr>
+                <td>{{ b['trek_name'] }}</td>
+                <td>{{ b['location'] }}</td>
+                <td><span class="badge badge-difficulty-{{ b['difficulty']|lower }}">{{ b['difficulty'] }}</span></td>
+                <td class="small">{{ b['start_date'] }} &rarr; {{ b['end_date'] }}</td>
+                <td>
+                    {% if b['status'] == 'Booked' %}<span class="badge badge-status-open">Booked</span>
+                    {% elif b['status'] == 'Cancelled' %}<span class="badge bg-danger">Cancelled</span>
+                    {% else %}<span class="badge badge-status-completed">Completed</span>{% endif %}
+                </td>
+                <td>
+                    {% if b['status'] == 'Booked' %}
+                    <form method="POST" action="{{ url_for('trekker.cancel_booking', booking_id=b['id']) }}" onsubmit="return confirm('Cancel this booking?');">
+                        <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                    </form>
+                    {% else %}
+                    <span class="text-muted small">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="6" class="text-center text-muted">You haven't booked any treks yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}
